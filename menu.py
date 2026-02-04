@@ -1,10 +1,14 @@
 from validaciones import validar_opcion
 from control_CSV import actualizar_movimientos
-from inventario import generar_pendientes_freshservice, listar_pendientes_freshservice, resumen_inventario
-
+from inventario import (
+    generar_pendientes_freshservice,
+    listar_pendientes_freshservice,
+    resumen_inventario,
+    buscar_equipo_por_serie
+)
 
 def menu_principal():
-    opciones = {1, 2, 3, 4}
+    opciones = {1, 2, 3, 4, 5}
 
     while True:
         print("\n==============================")
@@ -13,7 +17,8 @@ def menu_principal():
         print("1) Actualización de Actas")
         print("2) Cruce con FreshService (Generar pendientes)")
         print("3) Listar pendientes FreshService")
-        print("4) Salir")
+        print("4) Buscar equipo por número de serie")
+        print("5) Salir")
 
         entrada = input("Seleccione una opción: ")
         opcion = validar_opcion(entrada, opciones)
@@ -30,10 +35,10 @@ def menu_principal():
             case 3:
                 listar_pendientes_freshservice()
             case 4:
+                buscar_equipo_por_serie()
+            case 5:
                 print("Saliendo del sistema...")
                 break
-            case _:
-                print("Opción inválida. Intente nuevamente.") #esta opcion es redundante,
 
 
 def menu_actualizacion_actas():

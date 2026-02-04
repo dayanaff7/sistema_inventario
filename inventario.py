@@ -197,3 +197,47 @@ def listar_pendientes_freshservice():
 
     print("-" * 70)
     print("Tip: estos equipos aparecen en actas pero NO están registrados en Freshservice.")
+
+def buscar_equipo_por_serie():
+    """
+    Busca todos los movimientos de una serie ingresada por el usuario.
+    La búsqueda es insensible a mayúsculas/minúsculas.
+    """
+    if not os.path.exists(RUTA_MOV):
+        print("No existe movimientos.csv. Primero ejecute 'Actualización de Actas'.")
+        return
+
+    serie_input = input("Ingrese número de serie del equipo: ").strip().upper()
+
+    if not serie_input:
+        print("La serie no puede estar vacía.")
+        return
+
+    movimientos = cargar_movimientos(RUTA_MOV)
+
+    encontrados = [
+        mov for mov in movimientos
+        if (mov.get("serie") or "").strip().upper() == serie_input
+    ]
+
+    if not encontrados:
+        print(f"No se encontraron movimientos para la serie {serie_input}.")
+        return
+
+    print("\n==============================================")
+    print(f" Movimientos del equipo - Serie: {serie_input}")
+    print("==============================================")
+    print(f"{'FECHA':<12} {'TIPO':<12} {'RUT':<14} {'NOMBRE':<25} {'CENTRO COSTO'}")
+    print("-" * 90)
+
+    for mov in encontrados:
+        fecha = mov.get("fecha", "")
+        tipo = mov.get("tipo_movimiento", "")
+        rut = mov.get("rut", "")
+        nombre = mov.get("nombre", "")
+        cc = mov.get("centro_costo", "")
+
+        print(f"{fecha:<12} {tipo:<12} {rut:<14} {nombre:<25} {cc}")
+
+    print("-" * 90)
+    print(f"Total movimientos encontrados: {len(encontrados)}")
